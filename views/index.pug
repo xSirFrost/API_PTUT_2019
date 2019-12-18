@@ -1,0 +1,32 @@
+extends layout
+
+block content
+  //- Declaration
+  mixin commandTitle(titre, description)
+    h5= titre
+    p
+      strong= description
+
+  mixin commandParam(nomArg, description, obligatoire)
+    tr
+      td
+        i= nomArg + "  "
+      td
+        if obligatoire
+          = "obligatoire"
+        else if !obligatoire
+          = "facultatif"
+      td
+        = description
+
+  //use
+  h3 Dictionnaire des commandes
+  +commandTitle("/films", "Permet de recuperer tout les films")
+  table
+    +commandParam("page", "Pagination par lot de 50, si vous mettez page 2, vous avez 51-100")
+  +commandTitle("/films/:id", "Permet de récuperer 1 film")
+  table
+    +commandParam("id", "ID du film", true)
+
+
+
