@@ -22,19 +22,24 @@ module.exports = {
             client.connect(function (err) {
                 if(err != undefined){
                     res.send(errToJSON(err));
+                    return;
                 }
-                return client.execute(queryParam, function (err, result) {
+                client.execute(queryParam, function (err, result) {
                     if(err != undefined){
-                        return res.send(errToJSON(err));
+                        res.send(errToJSON(err));
+                        return;
                     }
                     if(result == undefined){
                         res.send("{}");
+                        return;
                     }
                     res.send(result);
+                    return;
                 });
             });
         } catch (error) {
             res.send(errToJSON(error));
+            return;
         }
     },
     executeQueryWithPage : function(query,res,paramPage) {
@@ -53,6 +58,7 @@ module.exports = {
             client.connect(function (err) {
                 if(err != undefined){
                     res.send(errToJSON(err));
+                    return;
                 }
                 client.eachRow(query, null, {prepare: true, autoPage: true}, function (n, row) {
                     if (n >= page * offset && n < offset + page * offset) {
@@ -60,17 +66,51 @@ module.exports = {
                     }
                 }, function callback(err, result) {
                     if(err != undefined){
-                        return res.send(errToJSON(err));
+                        res.send(errToJSON(err));
+                        return;
                     }
                     if(pageResult == undefined){
                         res.send("{}");
+                        return;
                     }
                     res.send(pageResult);
+                    return;
                 });
 
             });
         } catch (error) {
-            return res.send(errToJSON(error));
+            res.send(errToJSON(error));
+            return;
+        }
+    },
+    executeQueryWithParam : function(query,param,res) {
+        try {
+            //Connect
+            const client = connection();
+            const queryString = query;
+
+            //send
+            client.connect(function (err) {
+                if(err != undefined){
+                    res.send(errToJSON(err));
+                    return;
+                }
+                client.execute(queryString, param, { prepare: true },function (err, result) {
+                    if(err != undefined){
+                        res.send(errToJSON(err));
+                        return;
+                    }
+                    if(result == undefined){
+                        res.send("{}");
+                        return;
+                    }
+                    res.send(result);
+                    return;
+                });
+            });
+        } catch (error) {
+            res.send(errToJSON(error));
+            return;
         }
     }
 };

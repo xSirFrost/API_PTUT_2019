@@ -4,14 +4,13 @@ const queryRunner = require('./../public/tools/queryRunner');
 
 router.get('/', function(req, res, next) {
     const query = "select * from kspace.movies;";
-    console.log(query);
     queryRunner.executeQueryWithPage(query,res,req.query.page);
 });
 
 router.get('/:id', function(req, res, next) {
-    const query = "select * from kspace.movies where movie_id="+req.params.id+";";
-    console.log(query);
-    queryRunner.executeQuery(query,res);
+    const query = 'select * from kspace.movies where movie_id=?;';
+    const params = [req.params.id];
+    queryRunner.executeQueryWithParam(query,params,res);
 });
 
 module.exports = router;
