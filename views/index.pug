@@ -2,31 +2,245 @@ extends layout
 
 block content
   //- Declaration
-  mixin commandTitle(titre, description)
-    h5= titre
-    p
-      strong= description
+  mixin thcommande()
+    tr(class='row')
+      th(class='col s2')
+        = "Placement"
+      th(class='col s2')
+        = "Obligatoire"
+      th(class='col s3')
+        = "Nom argument"
+      th(class='col s5')
+        = "Description"
 
-  mixin commandParam(nomArg, description, obligatoire)
-    tr
-      td
-        i= nomArg + "  "
-      td
+  mixin threturn()
+    tr(class='row')
+      th(class='col s2')
+        = "Variable"
+      th(class='col s2')
+        = "Sous-variable"
+      th(class='col s8')
+        = "Description"
+
+
+  mixin thinfo()
+    tr(class='row')
+      th(class='col s2')
+        = "Importance"
+      th(class='col s2')
+        = "Obligatoire"
+      th(class='col s3')
+        = "Nom info"
+      th(class='col s5')
+        = "Description"
+
+  mixin commandParam(url, nomArg, description, obligatoire)
+    tr(class='row')
+      td(class='col s2')
+        if url
+          = "Url"
+        else if !url
+          = "Body"
+      td(class='col s2')
         if obligatoire
-          = "obligatoire"
+          = "✔"
         else if !obligatoire
-          = "facultatif"
-      td
+          = "✘"
+      td(class='col s3')
+        i= nomArg + "  "
+      td(class='col s5')
         = description
 
+  mixin commandeReturn(variable, subvariable, description)
+    tr(class='row')
+      td(class='col s2')
+        = variable
+      td(class='col s2')
+        i= subvariable
+      td(class='col s8')
+        = description
+
+  mixin infoParam(importance, obligatoire, nom, description)
+    tr(class='row')
+      td(class='col s2')
+        = importance
+      td(class='col s2')
+        if obligatoire
+          = "✔"
+        else if !obligatoire
+          = "✘"
+      td(class='col s3')
+        i= nom + "  "
+      td(class='col s5')
+        = description
+
+  mixin commandeParamGroup()
+    .commandeParamGroup
+      .commandeParamGroup-wrapper
+        h5
+          = "Paramètre"
+        table(class='striped')
+          +thcommande
+          block
+
+  mixin commandeReturnGroup()
+    .commandeParamGroup
+      .commandeParamGroup-wrapper
+        br
+        h5
+          = "Return"
+        table(class='striped')
+          +threturn
+          block
+
+  mixin commande(titre, description, color, type)
+    .commande
+      .commande-wrapper
+        div(class='row')
+          div(class='col s10 offset-s1')
+            div(class='card '+color)
+              div(class='card-content black-text')
+                span(class='card-title')
+                  strong
+                    = type
+                  = " "+titre
+                p
+                  = description
+              div(class='card-action')
+                block
+
+  mixin information(titre, description, color)
+    .commande
+      .commande-wrapper
+        div(class='row')
+          div(class='col s10 offset-s1')
+            div(class='card ' + color)
+              div(class='card-content black-text')
+                span(class='card-title')
+                  = titre
+                p
+                  = description
+              div(class='card-action')
+                table(class='striped')
+                  +thinfo
+                  block
+
   //use
-  h3 Dictionnaire des commandes
-  +commandTitle("/films", "Permet de recuperer tout les films")
-  table
-    +commandParam("page", "Pagination par lot de 50, si vous mettez page 2, vous avez 51-100")
-  +commandTitle("/films/:id", "Permet de récuperer 1 film")
-  table
-    +commandParam("id", "ID du film", true)
+  nav
+    div(class='nav-wrapper')
+      a(href='' class='brand-logo center')
+        = 'Dictionnaire des commandes'
 
+  +information("Informations générales", "Listes des informations utiles à l'appel de l'API","light-blue lighten-4")
+    +infoParam("***",true,"URL", "localhost:3000")
+    +infoParam("***",true,"Header", "Au minimum : [Content-Type: application/json]")
+    +infoParam("***",true,"Body", "JSON")
+    +infoParam("**",true,"Protocole", "HTTP")
+    +infoParam("**",true,"Return", "JSON")
 
+  +commande("/films", "Permet de recuperer tout les films","deep-orange lighten-4","Get")
+    +commandeParamGroup
+      +commandParam(true,"?page=[int]", "Pagination par lot de 50, si vous mettez page=2, vous avez 51-100")
+    +commandeReturnGroup
+      +commandeReturn("[{}]","","Liste des lignes sous forme de tableau")
+      +commandeReturn("","movie_id:[UUID]","ID du film en base")
+      +commandeReturn("","adult:[Bool]","True si c'est un film pour adulte")
+      +commandeReturn("","collection_id:[UUID]","Si un film fait partie d'une collection, voici son ID")
+      +commandeReturn("","collection_name:[String]","Si un film fait partie d'une collection, voici son Nom")
+      +commandeReturn("","original_language:[String]","VO")
+      +commandeReturn("","original_title:[String]","Titre en VO")
+      +commandeReturn("","overview:[String]","Résumé")
+      +commandeReturn("","popularity:[Float]","Popularité du film en pourcentage")
+      +commandeReturn("","poster_path:[String]","Url de l'image du film")
+      +commandeReturn("","release_date:[String]","Date de sortie sous format \"YYYY-MM-DD\"")
+      +commandeReturn("","revenue:[Int]","Revenu du film")
+      +commandeReturn("","runtime:[Int]","Temps du film en minute")
+      +commandeReturn("","status:[String]","Statu du film (released,..)")
+      +commandeReturn("","title:[String]","Titre")
+      +commandeReturn("","vote_average:[Float]","Moyenne sur 10")
+      +commandeReturn("","vote_count:[Int]","Nom de votant")
 
+  +commande("/films/:id", "Permet de récuperer un film","deep-orange lighten-4","Get")
+    +commandeParamGroup
+      +commandParam(true,"id", "Movie_id du film", true)
+    +commandeReturnGroup
+      +commandeReturn("info{}","","Informations sur la connections")
+      +commandeReturn("rows[{}]","","Liste des lignes")
+      +commandeReturn("","movie_id:[UUID]","ID du film en base")
+      +commandeReturn("","adult:[Bool]","True si c'est un film pour adulte")
+      +commandeReturn("","collection_id:[UUID]","Si un film fait partie d'une collection, voici son ID")
+      +commandeReturn("","collection_name:[String]","Si un film fait partie d'une collection, voici son Nom")
+      +commandeReturn("","original_language:[String]","VO")
+      +commandeReturn("","original_title:[String]","Titre en VO")
+      +commandeReturn("","overview:[String]","Résumé")
+      +commandeReturn("","popularity:[Float]","Popularité du film en pourcentage")
+      +commandeReturn("","poster_path:[String]","Url de l'image du film")
+      +commandeReturn("","release_date:[String]","Date de sortie sous format \"YYYY-MM-DD\"")
+      +commandeReturn("","revenue:[Int]","Revenu du film")
+      +commandeReturn("","runtime:[Int]","Temps du film en minute")
+      +commandeReturn("","status:[String]","Statu du film (released,..)")
+      +commandeReturn("","title:[String]","Titre")
+      +commandeReturn("","vote_average:[Float]","Moyenne sur 10")
+      +commandeReturn("","vote_count:[Int]","Nom de votant")
+      +commandeReturn("rowLength","","Nombre de ligne retourner ( Forcement 1 ici )")
+      +commandeReturn("columns[{}]","","Liste des collonnes")
+      +commandeReturn("pageState","","??")
+
+  +commande("/users/:id", "Permet de récuperer un utilisateur","green lighten-4","Get")
+    +commandeParamGroup
+      +commandParam(true,"id", "Userid de l'utilisateur", true)
+    +commandeReturnGroup
+      +commandeReturn("info{}","","Informations sur la connections")
+      +commandeReturn("rows[{}]","","Liste des lignes")
+      +commandeReturn("","userid:[UUID]","ID de l'utilisateur en base")
+      +commandeReturn("","age:[Int]","Age de l'utilisateur, par tranche d'age")
+      +commandeReturn("","gender:[String]","Genre de l'utilisateur, peut etre M, F ou A")
+      +commandeReturn("","occupation:[String]", "Code d'activité pro de l'utilisateur")
+      +commandeReturn("","occupationname:[String]", "Nom d'activité pro de l'utilisateur")
+      +commandeReturn("","zipcode:[String]", "Code postal de l'utilisateur")
+      +commandeReturn("rowLength","","Nombre de ligne retourner ( Forcement 1 ici )")
+      +commandeReturn("columns[{}]","","Liste des collonnes")
+      +commandeReturn("pageState","","??")
+
+  +commande("/users", "Permet d'ajouter un utilisateur","green lighten-4","Put")
+    +commandeParamGroup
+      +commandParam(false,"age:[Int]", "Age de l'utilisateur, par tranche d'age", true)
+      +commandParam(false,"gender:[String]", "Genre de l'utilisateur, peut etre M, F ou A", true)
+      +commandParam(false,"occupation:[String]", "Code d'activité pro de l'utilisateur", true)
+      +commandParam(false,"occupationname:[String]", "Nom d'activité pro de l'utilisateur", true)
+      +commandParam(false,"zipcode:[String]", "Code postal de l'utilisateur", true)
+    +commandeReturnGroup
+      +commandeReturn("query","","La requete preparé par le back")
+      +commandeReturn("param{}","","Liste des paramètres utilisé dans la query")
+      +commandeReturn("","userid:[UUID]","ID de l'utilisateur généré aléatoirement")
+      +commandeReturn("","age:[Int]","Age de l'utilisateur, par tranche d'age")
+      +commandeReturn("","gender:[String]","Genre de l'utilisateur, peut etre M, F ou A")
+      +commandeReturn("","occupation:[String]", "Code d'activité pro de l'utilisateur")
+      +commandeReturn("","occupationname:[String]", "Nom d'activité pro de l'utilisateur")
+      +commandeReturn("","zipcode:[String]", "Code postal de l'utilisateur")
+
+  +commande("/users", "Permet de modifier un utilisateur","green lighten-4","Patch")
+    +commandeParamGroup
+      +commandParam(false,"userid:[UUID]", "Userid de l'utilisateur", true)
+      +commandParam(false,"age:[Int]", "Age de l'utilisateur, par tranche d'age", true)
+      +commandParam(false,"gender:[String]", "Genre de l'utilisateur, peut etre M, F ou A\"", true)
+      +commandParam(false,"occupation:[String]", "Code d'activité pro de l'utilisateur", true)
+      +commandParam(false,"occupationname:[String]", "Nom d'activité pro de l'utilisateur", true)
+      +commandParam(false,"zipcode:[String]", "Code postal de l'utilisateur", true)
+    +commandeReturnGroup
+      +commandeReturn("query","","La requete preparé par le back")
+      +commandeReturn("param{}","","Liste des paramètres utilisé dans la query")
+      +commandeReturn("","userid:[UUID]","ID de l'utilisateur en base")
+      +commandeReturn("","age:[Int]","Age de l'utilisateur, par tranche d'age")
+      +commandeReturn("","gender:[String]","Genre de l'utilisateur, peut etre M, F ou A")
+      +commandeReturn("","occupation:[String]", "Code d'activité pro de l'utilisateur")
+      +commandeReturn("","occupationname:[String]", "Nom d'activité pro de l'utilisateur")
+      +commandeReturn("","zipcode:[String]", "Code postal de l'utilisateur")
+
+  +commande("/users", "Permet de supprimer un utilisateur","green lighten-4","Delete")
+    +commandeParamGroup
+      +commandParam(false,"userid:[UUID]", "Userid de l'utilisateur", true)
+    +commandeReturnGroup
+      +commandeReturn("query","","La requete preparé par le back")
+      +commandeReturn("param{}","","Liste des paramètres utilisé dans la query")
+      +commandeReturn("","userid:[UUID]","ID de l'utilisateur en base")

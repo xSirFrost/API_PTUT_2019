@@ -83,7 +83,7 @@ module.exports = {
             return;
         }
     },
-    executeQueryWithParam : function(query,param,res) {
+    executeQueryWithParam : function(query,param,res,resultString=undefined) {
         try {
             //Connect
             const client = connection();
@@ -102,6 +102,10 @@ module.exports = {
                     }
                     if(result == undefined){
                         res.send("{}");
+                        return;
+                    }
+                    if(resultString != undefined){
+                        res.send(resultString);
                         return;
                     }
                     res.send(result);
