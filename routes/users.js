@@ -48,7 +48,7 @@ router.put('/', function(req, res, next) {
 });
 
 router.patch('/', function(req, res, next){
-    const userid = req.body.userid
+    const userid = req.body.userid;
     const age = req.body.age;
     const gender = req.body.gender;
     const occupation = req.body.occupation;
@@ -87,7 +87,7 @@ router.patch('/', function(req, res, next){
 });
 
 router.delete('/', function(req, res, next){
-    const userid = req.body.userid
+    const userid = req.body.userid;
 
     if(userid == undefined){
         res.send(errToJSON(new Error("Userid non renseigné")));

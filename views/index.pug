@@ -137,6 +137,7 @@ block content
     +infoParam("***",true,"Body", "JSON")
     +infoParam("**",true,"Protocole", "HTTP")
     +infoParam("**",true,"Return", "JSON")
+    +infoParam("**",true,"Patch", "Attention : Faire un patch sur un where non trouvé,fera un insert")
 
   +commande("/films", "Permet de recuperer tout les films","deep-orange lighten-4","Get")
     +commandeParamGroup
@@ -244,3 +245,52 @@ block content
       +commandeReturn("query","","La requete preparé par le back")
       +commandeReturn("param{}","","Liste des paramètres utilisé dans la query")
       +commandeReturn("","userid:[UUID]","ID de l'utilisateur en base")
+
+  +commande("/ratings/:id", "Permet de recuperer les notes d'un utilisateur","lime lighten-4","Get")
+    +commandeParamGroup
+      +commandParam(true,"id=[UUID]", "Userid de l'utilisateur", true)
+      +commandParam(true,"?page=[int]", "Pagination par lot de 50, si vous mettez page=2, vous avez 51-100")
+      +commandParam(true,"?mode=\"attente\"", "Permet de recuperer seulement les notes en attentes", false)
+      +commandParam(true,"?mode=\"note\"", "Permet de recuperer seulement les notes déja notés", false)
+    +commandeReturnGroup
+      +commandeReturn("[{}]","","Liste des lignes sous forme de tableau")
+      +commandeReturn("","user_id:[UUID]","Identifiant de l'utilisateur")
+      +commandeReturn("","movie_id:[UUID]","Identifiant du film")
+      +commandeReturn("","rating:[Float]","Note : -1 si non noté, entre 0 et 5 sinon")
+      +commandeReturn("","timestamp:[Timestamp]","Date et Heure de la dernière mise à jour")
+
+  +commande("/ratings", "Permet d'ajouter une note pour un utilisateur","lime lighten-4","Put")
+    +commandeParamGroup
+      +commandParam(true,"user_id:[UUID]","Identifiant de l'utilisateur", true)
+      +commandParam(true,"movie_id:[UUID]","Identifiant du film", true)
+      +commandParam(true,"rating:[Float]","Note : -1 si non noté, entre 0 et 5 sinon", true)
+    +commandeReturnGroup
+      +commandeReturn("query","","La requete preparé par le back")
+      +commandeReturn("param{}","","Liste des paramètres utilisé dans la query")
+      +commandeReturn("","user_id:[UUID]","Identifiant de l'utilisateur")
+      +commandeReturn("","movie_id:[UUID]","Identifiant du film")
+      +commandeReturn("","rating:[Float]","Note : -1 si non noté, entre 0 et 5 sinon")
+      +commandeReturn("","timestamp:[Timestamp]","Date et Heure de la dernière mise à jour")
+
+  +commande("/ratings", "Permet d'ajouter une note pour un utilisateur","lime lighten-4","Patch")
+    +commandeParamGroup
+      +commandParam(true,"user_id:[UUID]","Identifiant de l'utilisateur", true)
+      +commandParam(true,"movie_id:[UUID]","Identifiant du film", true)
+      +commandParam(true,"rating:[Float]","Note : -1 si non noté, entre 0 et 5 sinon", true)
+    +commandeReturnGroup
+      +commandeReturn("query","","La requete preparé par le back")
+      +commandeReturn("param{}","","Liste des paramètres utilisé dans la query")
+      +commandeReturn("","user_id:[UUID]","Identifiant de l'utilisateur")
+      +commandeReturn("","movie_id:[UUID]","Identifiant du film")
+      +commandeReturn("","rating:[Float]","Note : -1 si non noté, entre 0 et 5 sinon")
+      +commandeReturn("","timestamp:[Timestamp]","Date et Heure de la dernière mise à jour")
+
+  +commande("/ratings", "Permet d'ajouter une note pour un utilisateur","lime lighten-4","Delete")
+    +commandeParamGroup
+      +commandParam(true,"user_id:[UUID]","Identifiant de l'utilisateur", true)
+      +commandParam(true,"movie_id:[UUID]","Identifiant du film", true)
+    +commandeReturnGroup
+      +commandeReturn("query","","La requete preparé par le back")
+      +commandeReturn("param{}","","Liste des paramètres utilisé dans la query")
+      +commandeReturn("","user_id:[UUID]","Identifiant de l'utilisateur")
+      +commandeReturn("","movie_id:[UUID]","Identifiant du film")
