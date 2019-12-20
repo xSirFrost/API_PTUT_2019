@@ -2,11 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8cf7e457-2d67-464f-8a31-5e528552441c" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/routes/ratings.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/tools/queryRunner.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/tools/queryRunner.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/films.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/films.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/ratings.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/ratings.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/users.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/users.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/views/index.pug" beforeDir="false" afterPath="$PROJECT_DIR$/views/index.pug" afterDir="false" />
     </list>
@@ -28,11 +26,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/routes/users.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="193">
-              <caret line="99" column="28" lean-forward="true" selection-start-line="99" selection-start-column="28" selection-end-line="99" selection-end-column="28" />
+            <state relative-caret-position="207">
+              <caret line="104" column="18" selection-start-line="104" selection-start-column="18" selection-end-line="104" selection-end-column="18" />
             </state>
           </provider>
         </entry>
@@ -40,17 +38,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/routes/ratings.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="95" column="79" selection-start-line="95" selection-start-column="79" selection-end-line="95" selection-end-column="79" />
+            <state relative-caret-position="193">
+              <caret line="59" column="10" lean-forward="true" selection-start-line="59" selection-start-column="10" selection-end-line="59" selection-end-column="10" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/views/index.pug">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4862">
-              <caret line="286" selection-start-line="286" selection-end-line="286" />
+            <state relative-caret-position="398">
+              <caret line="290" column="23" lean-forward="true" selection-start-line="290" selection-start-column="23" selection-end-line="290" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -85,8 +83,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/tools/queryRunner.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="207">
-              <caret line="144" column="19" selection-start-line="144" selection-end-line="145" />
+            <state relative-caret-position="206">
+              <caret line="255" column="45" lean-forward="true" selection-start-line="255" selection-start-column="45" selection-end-line="255" selection-end-column="45" />
             </state>
           </provider>
         </entry>
@@ -106,6 +104,7 @@
       <find>url</find>
       <find>pug</find>
       <find>page</find>
+      <find>mode</find>
     </findStrings>
     <replaceStrings>
       <replace>page</replace>
@@ -128,9 +127,9 @@
         <option value="$PROJECT_DIR$/app.js" />
         <option value="$PROJECT_DIR$/routes/films.js" />
         <option value="$PROJECT_DIR$/routes/users.js" />
+        <option value="$PROJECT_DIR$/public/tools/queryRunner.js" />
         <option value="$PROJECT_DIR$/routes/ratings.js" />
         <option value="$PROJECT_DIR$/views/index.pug" />
-        <option value="$PROJECT_DIR$/public/tools/queryRunner.js" />
       </list>
     </option>
   </component>
@@ -145,7 +144,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -185,12 +183,13 @@
         </subPane>
       </pane>
       <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1576785871609" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1576860827457" />
     <property name="javascript.nodejs.core.library.configured.version" value="10.14.1" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path" value="node" />
@@ -243,7 +242,9 @@
       <workItem from="1576749626933" duration="3437000" />
       <workItem from="1576756124195" duration="23342000" />
       <workItem from="1576786216635" duration="1874000" />
-      <workItem from="1576788122105" duration="402000" />
+      <workItem from="1576788122105" duration="740000" />
+      <workItem from="1576853694719" duration="6535000" />
+      <workItem from="1576860856313" duration="1113000" />
     </task>
     <task id="LOCAL-00001" summary="gitignore">
       <created>1576698263347</created>
@@ -273,17 +274,23 @@
       <option name="project" value="LOCAL" />
       <updated>1576768217994</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Ajout et Fin d'Octo ratings.js&#10;Correction de fuite mémoire dans queryRunner&#10;&#10;//TODO &#10;Après Octo ratings, il faut mettre a jour la table film">
+      <created>1576788590281</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1576788590281</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="88355000" />
+    <option name="totallyTimeSpent" value="96341000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.3033557" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.31208053" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Image Layers" order="3" />
@@ -293,7 +300,7 @@
       <window_info id="Favorites" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3286119" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.37393767" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.37393767" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39943343" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -323,7 +330,8 @@
     <MESSAGE value="Init git" />
     <MESSAGE value="update de queryRunner et test d'un put/insert" />
     <MESSAGE value="Update et facilitation de l'index&#10;Fin du OCTO users" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update et facilitation de l'index&#10;Fin du OCTO users" />
+    <MESSAGE value="Ajout et Fin d'Octo ratings.js&#10;Correction de fuite mémoire dans queryRunner&#10;&#10;//TODO &#10;Après Octo ratings, il faut mettre a jour la table film" />
+    <option name="LAST_COMMIT_MESSAGE" value="Ajout et Fin d'Octo ratings.js&#10;Correction de fuite mémoire dans queryRunner&#10;&#10;//TODO &#10;Après Octo ratings, il faut mettre a jour la table film" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -337,13 +345,10 @@
     </breakpoint-manager>
     <watches-manager>
       <configuration name="NodeJSConfigurationType">
-        <watch expression="query" />
-        <watch expression="queryParam" />
-        <watch expression="error" />
-        <watch expression="result" />
-        <watch expression="errToJSON(err)" />
-        <watch expression="req.body" />
-        <watch expression="uuidRandom" />
+        <watch expression="popularity" />
+        <watch expression="average" />
+        <watch expression="popularity" />
+        <watch expression="result3" />
       </configuration>
     </watches-manager>
   </component>
@@ -405,20 +410,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" column="22" selection-start-line="12" selection-start-column="22" selection-end-line="12" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/index.pug">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4862">
-          <caret line="286" selection-start-line="286" selection-end-line="286" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/stylesheets/style.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="154343">
@@ -433,13 +424,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/tools/queryRunner.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="207">
-          <caret line="144" column="19" selection-start-line="144" selection-end-line="145" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/routes/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
@@ -447,17 +431,38 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/ratings.js">
+    <entry file="file://$PROJECT_DIR$/app.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="95" column="79" selection-start-line="95" selection-start-column="79" selection-end-line="95" selection-end-column="79" />
+        <state relative-caret-position="204">
+          <caret line="12" column="22" selection-start-line="12" selection-start-column="22" selection-end-line="12" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/tools/queryRunner.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="206">
+          <caret line="255" column="45" lean-forward="true" selection-start-line="255" selection-start-column="45" selection-end-line="255" selection-end-column="45" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/routes/users.js">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="207">
+          <caret line="104" column="18" selection-start-line="104" selection-start-column="18" selection-end-line="104" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/ratings.js">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="193">
-          <caret line="99" column="28" lean-forward="true" selection-start-line="99" selection-start-column="28" selection-end-line="99" selection-end-column="28" />
+          <caret line="59" column="10" lean-forward="true" selection-start-line="59" selection-start-column="10" selection-end-line="59" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/index.pug">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="398">
+          <caret line="290" column="23" lean-forward="true" selection-start-line="290" selection-start-column="23" selection-end-line="290" selection-end-column="23" />
         </state>
       </provider>
     </entry>

@@ -250,8 +250,8 @@ block content
     +commandeParamGroup
       +commandParam(true,"id=[UUID]", "Userid de l'utilisateur", true)
       +commandParam(true,"?page=[int]", "Pagination par lot de 50, si vous mettez page=2, vous avez 51-100")
-      +commandParam(true,"?mode=\"attente\"", "Permet de recuperer seulement les notes en attentes", false)
-      +commandParam(true,"?mode=\"note\"", "Permet de recuperer seulement les notes déja notés", false)
+      +commandParam(true,"?mode=attente", "Permet de recuperer seulement les notes en attentes", false)
+      +commandParam(true,"?mode=note", "Permet de recuperer seulement les notes déja notés", false)
     +commandeReturnGroup
       +commandeReturn("[{}]","","Liste des lignes sous forme de tableau")
       +commandeReturn("","user_id:[UUID]","Identifiant de l'utilisateur")
@@ -261,9 +261,10 @@ block content
 
   +commande("/ratings", "Permet d'ajouter une note pour un utilisateur","lime lighten-4","Put")
     +commandeParamGroup
-      +commandParam(true,"user_id:[UUID]","Identifiant de l'utilisateur", true)
-      +commandParam(true,"movie_id:[UUID]","Identifiant du film", true)
-      +commandParam(true,"rating:[Float]","Note : -1 si non noté, entre 0 et 5 sinon", true)
+      +commandParam(true,"?actualise=O", "Actualise la table movies en vu des modifications. Attention, lance 4 appels vers Cassandra", false)
+      +commandParam(false,"user_id:[UUID]","Identifiant de l'utilisateur", true)
+      +commandParam(false,"movie_id:[UUID]","Identifiant du film", true)
+      +commandParam(false,"rating:[Float]","Note : -1 si non noté, entre 0 et 5 sinon", true)
     +commandeReturnGroup
       +commandeReturn("query","","La requete preparé par le back")
       +commandeReturn("param{}","","Liste des paramètres utilisé dans la query")
@@ -274,9 +275,10 @@ block content
 
   +commande("/ratings", "Permet d'ajouter une note pour un utilisateur","lime lighten-4","Patch")
     +commandeParamGroup
-      +commandParam(true,"user_id:[UUID]","Identifiant de l'utilisateur", true)
-      +commandParam(true,"movie_id:[UUID]","Identifiant du film", true)
-      +commandParam(true,"rating:[Float]","Note : -1 si non noté, entre 0 et 5 sinon", true)
+      +commandParam(true,"?actualise=O", "Actualise la table movies en vu des modifications. Attention, lance 4 appels vers Cassandra", false)
+      +commandParam(false,"user_id:[UUID]","Identifiant de l'utilisateur", true)
+      +commandParam(false,"movie_id:[UUID]","Identifiant du film", true)
+      +commandParam(false,"rating:[Float]","Note : -1 si non noté, entre 0 et 5 sinon", true)
     +commandeReturnGroup
       +commandeReturn("query","","La requete preparé par le back")
       +commandeReturn("param{}","","Liste des paramètres utilisé dans la query")
@@ -287,8 +289,9 @@ block content
 
   +commande("/ratings", "Permet d'ajouter une note pour un utilisateur","lime lighten-4","Delete")
     +commandeParamGroup
-      +commandParam(true,"user_id:[UUID]","Identifiant de l'utilisateur", true)
-      +commandParam(true,"movie_id:[UUID]","Identifiant du film", true)
+      +commandParam(true,"?actualise=O", "Actualise la table movies en vu des modifications. Attention, lance 4 appels vers Cassandra", false)
+      +commandParam(false,"user_id:[UUID]","Identifiant de l'utilisateur", true)
+      +commandParam(false,"movie_id:[UUID]","Identifiant du film", true)
     +commandeReturnGroup
       +commandeReturn("query","","La requete preparé par le back")
       +commandeReturn("param{}","","Liste des paramètres utilisé dans la query")

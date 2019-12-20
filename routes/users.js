@@ -21,22 +21,27 @@ router.put('/', function(req, res, next) {
 
     if(age == undefined){
         res.send(errToJSON(new Error("Age non renseigné")));
+        res.end();
         return;
     }
     if(gender == undefined){
         res.send(errToJSON(new Error("gender non renseigné")));
+        res.end();
         return;
     }
     if(occupation == undefined){
         res.send(errToJSON(new Error("occupation non renseigné")));
+        res.end();
         return;
     }
     if(occupationname == undefined){
         res.send(errToJSON(new Error("occupationname non renseigné")));
+        res.end();
         return;
     }
     if(zipcode == undefined){
         res.send(errToJSON(new Error("zipcode non renseigné")));
+        res.end();
         return;
     }
 
@@ -57,26 +62,32 @@ router.patch('/', function(req, res, next){
 
     if(userid == undefined){
         res.send(errToJSON(new Error("Userid non renseigné")));
+        res.end();
         return;
     }
     if(age == undefined){
         res.send(errToJSON(new Error("Age non renseigné")));
+        res.end();
         return;
     }
     if(gender == undefined){
         res.send(errToJSON(new Error("gender non renseigné")));
+        res.end();
         return;
     }
     if(occupation == undefined){
         res.send(errToJSON(new Error("occupation non renseigné")));
+        res.end();
         return;
     }
     if(occupationname == undefined){
         res.send(errToJSON(new Error("occupationname non renseigné")));
+        res.end();
         return;
     }
     if(zipcode == undefined){
         res.send(errToJSON(new Error("zipcode non renseigné")));
+        res.end();
         return;
     }
 
@@ -91,6 +102,7 @@ router.delete('/', function(req, res, next){
 
     if(userid == undefined){
         res.send(errToJSON(new Error("Userid non renseigné")));
+        res.end();
         return;
     }
 

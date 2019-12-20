@@ -31,72 +31,104 @@ router.put('/', function(req, res, next) {
     const user_id = req.body.user_id;
     const movie_id = req.body.movie_id;
     const rating = req.body.rating;
+    const actualise = req.query.actualise;
 
     if(user_id == undefined){
         res.send(errToJSON(new Error("User_id non renseigné")));
+        res.end();
         return;
     }
 
     if(movie_id == undefined){
         res.send(errToJSON(new Error("Movie_id non renseigné")));
+        res.end();
         return;
     }
 
     if(rating == undefined){
         res.send(errToJSON(new Error("Rating non renseigné")));
+        res.end();
         return;
     }
     const query = 'insert into kspace.ratings (user_id,movie_id,rating,timestamp) values (?,?,?,?);';
     const timestampNow = Date.now();
     const params = [user_id, movie_id, rating,timestampNow];
-    const returnString = JSON.stringify({ query: query, param: {user_id : user_id, movie_id : movie_id, rating: rating, timestamp:timestampNow} });
-    queryRunner.executeQueryWithParam(query,params,res, returnString);
+    if(actualise == "O"){
+        const returnString = JSON.stringify({ query: query, param: {user_id : user_id, movie_id : movie_id, rating: rating, timestamp:timestampNow}, actualise:true });
+        queryRunner.executeQueryWithParamAndActualiseFilm(movie_id,query,params,res, returnString);
+
+    }else{
+        const returnString = JSON.stringify({ query: query, param: {user_id : user_id, movie_id : movie_id, rating: rating, timestamp:timestampNow}, actualise:false });
+        queryRunner.executeQueryWithParam(query,params,res, returnString);
+
+    }
 });
 
 router.patch('/', function(req, res, next) {
     const user_id = req.body.user_id;
     const movie_id = req.body.movie_id;
     const rating = req.body.rating;
+    const actualise = req.query.actualise;
+
 
     if(user_id == undefined){
         res.send(errToJSON(new Error("User_id non renseigné")));
+        res.end();
         return;
     }
 
     if(movie_id == undefined){
         res.send(errToJSON(new Error("Movie_id non renseigné")));
+        res.end();
         return;
     }
 
     if(rating == undefined){
         res.send(errToJSON(new Error("Rating non renseigné")));
+        res.end();
         return;
     }
     const query = 'Update kspace.ratings set rating=?,timestamp=? where user_id=? and movie_id=?;';
     const timestampNow = Date.now();
     const params = [rating,timestampNow, user_id, movie_id];
-    const returnString = JSON.stringify({ query: query, param: {user_id : user_id, movie_id : movie_id, rating: rating, timestamp:timestampNow} });
-    queryRunner.executeQueryWithParam(query,params,res, returnString);
+    if(actualise == "O"){
+        const returnString = JSON.stringify({ query: query, param: {user_id : user_id, movie_id : movie_id, rating: rating, timestamp:timestampNow}, actualise:true });
+        queryRunner.executeQueryWithParamAndActualiseFilm(movie_id,query,params,res, returnString);
+
+    }else {
+        const returnString = JSON.stringify({ query: query, param: {user_id : user_id, movie_id : movie_id, rating: rating, timestamp:timestampNow}, actualise:false });
+        queryRunner.executeQueryWithParam(query,params,res, returnString);
+    }
 });
 
 router.delete('/', function(req, res, next){
     const user_id = req.body.user_id;
     const movie_id = req.body.movie_id;
+    const actualise = req.query.actualise;
+
 
     if(user_id == undefined){
         res.send(errToJSON(new Error("User_id non renseigné")));
+        res.end();
         return;
     }
 
     if(movie_id == undefined){
         res.send(errToJSON(new Error("Movie_id non renseigné")));
+        res.end();
         return;
     }
 
     const query = 'delete from kspace.ratings where user_id=? and movie_id=?;';
     const params = [user_id,movie_id];
-    const returnString = JSON.stringify({ query: query, param: {user_id : user_id, movie_id : movie_id}});
-    queryRunner.executeQueryWithParam(query,params,res, returnString);
+    if(actualise == "O"){
+        const returnString = JSON.stringify({ query: query, param: {user_id : user_id, movie_id : movie_id}, actualise:true});
+        queryRunner.executeQueryWithParamAndActualiseFilm(movie_id,query,params,res, returnString);
+
+    }else {
+        const returnString = JSON.stringify({ query: query, param: {user_id : user_id, movie_id : movie_id}, actualise:false});
+        queryRunner.executeQueryWithParam(query,params,res, returnString);
+    }
 });
 
 module.exports = router;
