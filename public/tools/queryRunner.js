@@ -145,7 +145,8 @@ module.exports = {
             res.end();
             return;
         }
-    }, executeQueryWithParamAndActualiseFilm : function(movie_id,query,param,res,resultString=undefined) {
+    },
+    executeQueryWithParamAndActualiseFilm : function(movie_id,query,param,res,resultString=undefined) {
         try {
             //Connect
             let client = connection();
@@ -285,6 +286,92 @@ module.exports = {
                             });
                         });
                     }
+                });
+            });
+        } catch (error) {
+            res.send(errToJSON(error));
+            res.end();
+            return;
+        }
+    },
+    getFilmCrewCast : function(movie_id,res){
+        try {
+            //Connect
+            let client = connection();
+            //send
+            client.connect(function (err) {
+                if(err != undefined){
+                    res.send(errToJSON(err));
+                    client.shutdown();
+                    res.end();
+                    return;
+                }
+                client.execute("select * from kspace.movies where movie_id=?;", [movie_id], { prepare: true },function (err, result) {
+                    if(err != undefined){
+                        res.send({});
+                        client.shutdown();
+                        res.end();
+                        return;
+                    }
+                    if(result == undefined){
+                        res.send("{}");
+                        client.shutdown();
+                        res.end();
+                        return;
+                    }
+                    //Si on a bien pu faire l'action, on récupert le crew
+                    client.shutdown;
+                    let resultReturn = result;
+                    client = connection();
+                    client.connect(function (err) {
+                        if(err != undefined){
+                            res.send(errToJSON(err));
+                            client.shutdown();
+                            res.end();
+                            return;
+                        }
+                        client.execute("select * from kspace.crew where movie_id=?;", [movie_id], { prepare: true }, function (err, result2) {
+                            if (err != undefined) {
+                                res.send(errToJSON(err));
+                                client.shutdown();
+                                res.end();
+                                return;
+                            }
+                            if (result2 == undefined) {
+                                resultReturn.rows[0]["crew"]= "{}";
+                            }else{
+                                resultReturn.rows[0]["crew"]= result2.rows;
+                            }
+                            //mnt on récupert le cast
+                            client.shutdown;
+                            client = connection();
+                            client.connect(function (err) {
+                                if(err != undefined){
+                                    res.send(errToJSON(err));
+                                    client.shutdown();
+                                    res.end();
+                                    return;
+                                }
+                                client.execute("select * from kspace.cast where movie_id=?;", [movie_id], {prepare: true}, function (err, result3) {
+                                    if (err != undefined) {
+                                        res.send(errToJSON(err));
+                                        client.shutdown();
+                                        res.end();
+                                        return;
+                                    }
+                                    if (result3 == undefined) {
+                                        resultReturn.rows[0]["cast"]= "{}";
+                                    }else{
+                                        resultReturn.rows[0]["cast"]= result3.rows;
+                                    }
+                                    res.send(resultReturn);
+                                    client.shutdown();
+                                    res.end();
+                                    return;
+                                });
+                            });
+                        });
+                    });
                 });
             });
         } catch (error) {
