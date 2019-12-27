@@ -13,43 +13,50 @@ function connection(){
 
 module.exports = {
     executeQuery : function(query,res) {
-        try {
-            //Connect
-            const client = connection();
-            const queryParam = query;
+        return new Promise((resolve, reject) => {
+            try {
+                //Connect
+                const client = connection();
+                const queryParam = query;
 
-            //send
-            client.connect(function (err) {
-                if(err != undefined){
-                    res.send(errToJSON(err));
-                    client.shutdown();
-                    res.end();
-                    return;
-                }
-                client.execute(queryParam, function (err, result) {
-                    if(err != undefined){
-                        res.send(errToJSON(err));
+                //send
+                client.connect( function ( err ) {
+                    if ( err != undefined ) {
+                        res.send( errToJSON( err ) );
                         client.shutdown();
                         res.end();
+                        reject(err)
                         return;
                     }
-                    if(result == undefined){
-                        res.send("{}");
+                    client.execute( queryParam, function ( err, result ) {
+                        if ( err != undefined ) {
+                            res.send( errToJSON( err ) );
+                            client.shutdown();
+                            res.end();
+                            reject(err);
+                            return;
+                        }
+                        if ( result == undefined ) {
+                            res.send( "{}" );
+                            client.shutdown();
+                            res.end();
+                            resolve("{}");
+                            return;
+                        }
+                        res.send( result );
                         client.shutdown();
                         res.end();
+                        resolve(result);
                         return;
-                    }
-                    res.send(result);
-                    client.shutdown();
-                    res.end();
-                    return;
-                });
-            });
-        } catch (error) {
-            res.send(errToJSON(error));
-            res.end();
-            return;
-        }
+                    } );
+                } );
+            } catch ( error ) {
+                res.send( errToJSON( error ) );
+                res.end();
+                reject(error);
+            }
+        })
+        
     },
     executeQueryWithPage : function(query,page,res,param = null) {
         try {
