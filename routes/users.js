@@ -5,10 +5,16 @@ const errToJSON = require('error-to-json');
 const cassandra = require('cassandra-driver');
 const Uuid = cassandra.types.Uuid;
 
-router.get('/:id', function(req, res, next) {
+router.get('/:id', async function(req, res, next) {
     const query = "select * from kspace.users where userid="+req.params.id+";";
     console.log(query);
-    queryRunner.executeQuery(query,res);
+    await queryRunner.executeQuery(query,res).then( result =>{
+        res.send(result);
+        res.end();
+    },err =>{
+        res.send(err);
+        res.end();
+    });
 });
 
 

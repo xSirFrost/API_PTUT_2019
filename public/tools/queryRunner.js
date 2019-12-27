@@ -23,34 +23,41 @@ function returnAndClose(res,client,send){
 
 module.exports = {
     executeQuery : async function(query,res) {
-        //Connect
-        const client = connection();
-        const queryParam = query;
+        return new Promise(async(resolve, reject) => {
+            //Connect
+            const client = connection();
+            const queryParam = query;
 
-        //send
-        await client.connect().then(async err =>{
-            if(err != undefined){
-                returnAndClose(res,client,errToJSON(err));
-                return;
-            }
-            await client.execute(queryParam).then((err, result) => {
-                if(err != undefined){
-                    returnAndClose(res,client,errToJSON(err));
+            //send
+            await client.connect().then(async err => {
+                if (err != undefined) {
+                    client.shutdown();
+                    reject(err)
                     return;
                 }
-                if(result == undefined){
-                    returnAndClose(res,client,"{}");
+                await client.execute(queryParam).then((err, result) => {
+                    if (err != undefined) {
+                        client.shutdown();
+                        reject(err)
+                        return;
+                    }
+                    if (result == undefined) {
+                        client.shutdown();
+                        resolve("{}");
+                        return;
+                    }
+                    client.shutdown();
+                    resolve(result);
                     return;
-                }
-                returnAndClose(res,client,result);
-                return;
-            },err =>{
-                returnAndClose(res,null,errToJSON(err));
+                }, err => {
+                    client.shutdown();
+                    reject(err)
+                    return;
+                });
+            }, err => {
+                reject(err)
                 return;
             });
-        },err =>{
-            returnAndClose(res,null,errToJSON(err));
-            return;
         });
     },
     executeQueryWithPage : function(query,page,res,param = null) {
