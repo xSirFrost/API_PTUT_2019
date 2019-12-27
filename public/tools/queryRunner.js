@@ -11,45 +11,47 @@ function connection(){
     });
 }
 
-module.exports = {
-    executeQuery : function(query,res) {
-        try {
-            //Connect
-            const client = connection();
-            const queryParam = query;
+function returnAndClose(res,client,send){
+    if(res!=null){
+        res.send(send);
+        res.end();
+    }
+    if(client!=null){
+        client.shutdown();
+    }
+}
 
-            //send
-            client.connect(function (err) {
+module.exports = {
+    executeQuery : async function(query,res) {
+        //Connect
+        const client = connection();
+        const queryParam = query;
+
+        //send
+        await client.connect().then(async err =>{
+            if(err != undefined){
+                returnAndClose(res,client,errToJSON(err));
+                return;
+            }
+            await client.execute(queryParam).then((err, result) => {
                 if(err != undefined){
-                    res.send(errToJSON(err));
-                    client.shutdown();
-                    res.end();
+                    returnAndClose(res,client,errToJSON(err));
                     return;
                 }
-                client.execute(queryParam, function (err, result) {
-                    if(err != undefined){
-                        res.send(errToJSON(err));
-                        client.shutdown();
-                        res.end();
-                        return;
-                    }
-                    if(result == undefined){
-                        res.send("{}");
-                        client.shutdown();
-                        res.end();
-                        return;
-                    }
-                    res.send(result);
-                    client.shutdown();
-                    res.end();
+                if(result == undefined){
+                    returnAndClose(res,client,"{}");
                     return;
-                });
+                }
+                returnAndClose(res,client,result);
+                return;
+            },err =>{
+                returnAndClose(res,null,errToJSON(err));
+                return;
             });
-        } catch (error) {
-            res.send(errToJSON(error));
-            res.end();
+        },err =>{
+            returnAndClose(res,null,errToJSON(err));
             return;
-        }
+        });
     },
     executeQueryWithPage : function(query,page,res,param = null) {
         try {
@@ -66,9 +68,7 @@ module.exports = {
             //send
             client.connect(function (err) {
                 if(err != undefined){
-                    res.send(errToJSON(err));
-                    client.shutdown();
-                    res.end();
+                    returnAndClose(res,client,errToJSON(err));
                     return;
                 }
                 client.eachRow(query, param, {prepare: true, autoPage: true}, function (n, row) {
@@ -77,27 +77,20 @@ module.exports = {
                     }
                 }, function callback(err, result) {
                     if(err != undefined){
-                        res.send(errToJSON(err));
-                        client.shutdown();
-                        res.end();
+                        returnAndClose(res,client,errToJSON(err));
                         return;
                     }
                     if(pageResult == undefined){
-                        res.send("{}");
-                        client.shutdown();
-                        res.end();
+                        returnAndClose(res,client,"{}");
                         return;
                     }
-                    res.send(pageResult);
-                    client.shutdown();
-                    res.end();
+                    returnAndClose(res,client,pageResult);
                     return;
                 });
 
             });
-        } catch (error) {
-            res.send(errToJSON(error));
-            res.end();
+        } catch (err) {
+            returnAndClose(res,null,errToJSON(err));
             return;
         }
     },
@@ -110,39 +103,28 @@ module.exports = {
             //send
             client.connect(function (err) {
                 if(err != undefined){
-                    res.send(errToJSON(err));
-                    client.shutdown();
-                    res.end();
+                    returnAndClose(res,client,errToJSON(err));
                     return;
                 }
                 client.execute(queryString, param, { prepare: true },function (err, result) {
                     if(err != undefined){
-                        res.send(errToJSON(err));
-                        client.shutdown();
-                        res.end();
+                        returnAndClose(res,client,errToJSON(err));
                         return;
                     }
                     if(result == undefined){
-                        res.send("{}");
-                        client.shutdown();
-                        res.end();
+                        returnAndClose(res,client,"{}");
                         return;
                     }
                     if(resultString != undefined){
-                        res.send(resultString);
-                        client.shutdown();
-                        res.end();
+                        returnAndClose(res,client,resultString);
                         return;
                     }
-                    res.send(result);
-                    client.shutdown();
-                    res.end();
+                    returnAndClose(res,client,result);
                     return;
                 });
             });
-        } catch (error) {
-            res.send(errToJSON(error));
-            res.end();
+        } catch (err) {
+            returnAndClose(res,null,errToJSON(err));
             return;
         }
     },
@@ -159,125 +141,91 @@ module.exports = {
             //send
             client.connect(function (err) {
                 if(err != undefined){
-                    res.send(errToJSON(err));
-                    client.shutdown();
-                    res.end();
+                    returnAndClose(res,client,errToJSON(err));
                     return;
                 }
                 client.execute(queryString, param, { prepare: true },function (err, result) {
                     if(err != undefined){
-                        res.send(errToJSON(err));
-                        client.shutdown();
-                        res.end();
+                        returnAndClose(res,client,errToJSON(err));
                         return;
                     }
                     if(result == undefined){
-                        res.send(errToJSON(new Error("Action en echec car le résultat est vide")));
-                        client.shutdown();
-                        res.end();
+                        returnAndClose(res,client,(errToJSON(new Error("Action en echec car le résultat est vide"))));
                         return;
                     }
                     if(resultString != undefined){
-                    //Si on a bien pu faire l'action, on récupert le nombre d'user
+                        //Si on a bien pu faire l'action, on récupert le nombre d'user
                         client.shutdown;
                         client = connection();
                         client.connect(function (err) {
                             if(err != undefined){
-                                res.send(errToJSON(err));
-                                client.shutdown();
-                                res.end();
+                                returnAndClose(res,client,(errToJSON(err)));
                                 return;
                             }
                             client.execute("select count(*) as \"popularity\" from kspace.users;", function (err, result2) {
                                 if (err != undefined) {
-                                    res.send(errToJSON(err));
-                                    client.shutdown();
-                                    res.end();
+                                    returnAndClose(res,client,(errToJSON(err)));
                                     return;
                                 }
                                 if (result2 == undefined) {
-                                    res.send(errToJSON(new Error("Récuperation du nombre total d'utilisateur en echec")));
-                                    client.shutdown();
-                                    res.end();
+                                    returnAndClose(res,client,(errToJSON(new Error("Récuperation du nombre total d'utilisateur en echec"))));
                                     return;
                                 }
                                 //Si on a bien récuperer le nombre d'user, on récupert le nombre et moyenne de vote
                                 client.shutdown;
                                 if (result2.rows[0]["popularity"] == undefined) {
-                                    res.send(errToJSON(new Error("Récuperation du nombre total d'utilisateur en echec")));
-                                    client.shutdown();
-                                    res.end();
+                                    returnAndClose(res,client,(errToJSON(new Error("Récuperation du nombre total d'utilisateur en echec"))));
                                     return;
                                 }
                                 popularity = parseInt(result2.rows[0]["popularity"].toString());
                                 client = connection();
                                 client.connect(function (err) {
                                     if(err != undefined){
-                                        res.send(errToJSON(err));
-                                        client.shutdown();
-                                        res.end();
+                                        returnAndClose(res,client,(errToJSON(err)));
                                         return;
                                     }
                                     client.execute("select avg(rating) as averageNote,count(rating) as countNote from kspace.ratings where movie_id = ?;", [movie_id], {prepare: true}, function (err, result3) {
                                         if (err != undefined) {
-                                            res.send(errToJSON(err));
-                                            client.shutdown();
-                                            res.end();
+                                            returnAndClose(res,client,errToJSON(err));
                                             return;
                                         }
                                         if (result3 == undefined) {
-                                            res.send(errToJSON(new Error("Récuperation du nombre de vote et de la moyenne en echec")));
-                                            client.shutdown();
-                                            res.end();
+                                            returnAndClose(res,client,errToJSON(new Error("Récuperation du nombre de vote et de la moyenne en echec")));
                                             return;
                                         }
                                         //Si on a tout bien recuperer, on actualise film
                                         client.shutdown;
                                         if (result3.rows[0]["averagenote"] == undefined) {
-                                            res.send(errToJSON(new Error("Recuperation de la note moyenne en echec")));
-                                            client.shutdown();
-                                            res.end();
+                                            returnAndClose(res,client,errToJSON(new Error("Recuperation de la note moyenne en echec")));
                                             return;
                                         }
                                         average = parseFloat(result3.rows[0]["averagenote"].toString());
                                         if (result3.rows[0]["countnote"] == undefined) {
-                                            res.send(errToJSON(new Error("Recupereation du nombre de vote en echec")));
-                                            client.shutdown();
-                                            res.end();
+                                            returnAndClose(res,client,errToJSON(new Error("Recupereation du nombre de vote en echec")));
                                             return;
                                         }
                                         count = parseInt(result3.rows[0]["countnote"].toString());
                                         client = connection();
                                         client.connect(function (err) {
                                             if(err != undefined){
-                                                res.send(errToJSON(err));
-                                                client.shutdown();
-                                                res.end();
+                                                returnAndClose(res,client,errToJSON(err));
                                                 return;
                                             }
                                             client.execute("update kspace.movies set popularity=?,vote_average=?,vote_count=? where movie_id=?;", [(count/popularity*100), average, count, movie_id], {prepare: true}, function (err, result4) {
                                                 if (err != undefined) {
-                                                    res.send(errToJSON(err));
-                                                    client.shutdown();
-                                                    res.end();
+                                                    returnAndClose(res,client,errToJSON(err));
                                                     return;
                                                 }
                                                 if (result4 == undefined) {
-                                                    res.send(errToJSON(new Error("Actualisation du film en echec")));
-                                                    client.shutdown();
-                                                    res.end();
+                                                    returnAndClose(res,client,errToJSON(new Error("Actualisation du film en echec")));
                                                     return;
                                                 }
                                                 //On envoie le paramètre sauf si on a bien un result string
                                                 if (resultString != undefined) {
-                                                    res.send(resultString);
-                                                    client.shutdown();
-                                                    res.end();
+                                                    returnAndClose(res,client,resultString);
                                                     return;
                                                 }
-                                                res.send(result);
-                                                client.shutdown();
-                                                res.end();
+                                                returnAndClose(res,client,result);
                                                 return;
                                             });
                                         });
@@ -289,8 +237,7 @@ module.exports = {
                 });
             });
         } catch (error) {
-            res.send(errToJSON(error));
-            res.end();
+            returnAndClose(res,null,errToJSON(error));
             return;
         }
     },
@@ -301,22 +248,16 @@ module.exports = {
             //send
             client.connect(function (err) {
                 if(err != undefined){
-                    res.send(errToJSON(err));
-                    client.shutdown();
-                    res.end();
+                    returnAndClose(res,client,errToJSON(err));
                     return;
                 }
                 client.execute("select * from kspace.movies where movie_id=?;", [movie_id], { prepare: true },function (err, result) {
                     if(err != undefined){
-                        res.send({});
-                        client.shutdown();
-                        res.end();
+                        returnAndClose(res,client,"{}");
                         return;
                     }
                     if(result == undefined){
-                        res.send("{}");
-                        client.shutdown();
-                        res.end();
+                        returnAndClose(res,client,"{}");
                         return;
                     }
                     //Si on a bien pu faire l'action, on récupert le crew
@@ -325,16 +266,12 @@ module.exports = {
                     client = connection();
                     client.connect(function (err) {
                         if(err != undefined){
-                            res.send(errToJSON(err));
-                            client.shutdown();
-                            res.end();
+                            returnAndClose(res,client,errToJSON(err));
                             return;
                         }
                         client.execute("select * from kspace.crew where movie_id=?;", [movie_id], { prepare: true }, function (err, result2) {
                             if (err != undefined) {
-                                res.send(errToJSON(err));
-                                client.shutdown();
-                                res.end();
+                                returnAndClose(res,client,errToJSON(err));
                                 return;
                             }
                             if (result2 == undefined) {
@@ -347,16 +284,12 @@ module.exports = {
                             client = connection();
                             client.connect(function (err) {
                                 if(err != undefined){
-                                    res.send(errToJSON(err));
-                                    client.shutdown();
-                                    res.end();
+                                    returnAndClose(res,client,errToJSON(err));
                                     return;
                                 }
                                 client.execute("select * from kspace.cast where movie_id=?;", [movie_id], {prepare: true}, function (err, result3) {
                                     if (err != undefined) {
-                                        res.send(errToJSON(err));
-                                        client.shutdown();
-                                        res.end();
+                                        returnAndClose(res,client,errToJSON(err));
                                         return;
                                     }
                                     if (result3 == undefined) {
@@ -364,9 +297,7 @@ module.exports = {
                                     }else{
                                         resultReturn.rows[0]["cast"]= result3.rows;
                                     }
-                                    res.send(resultReturn);
-                                    client.shutdown();
-                                    res.end();
+                                    returnAndClose(res,client,resultReturn);
                                     return;
                                 });
                             });
@@ -375,8 +306,7 @@ module.exports = {
                 });
             });
         } catch (error) {
-            res.send(errToJSON(error));
-            res.end();
+            rreturnAndClose(res,null,errToJSON(error));
             return;
         }
     }
