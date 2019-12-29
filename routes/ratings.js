@@ -11,19 +11,40 @@ router.get('/:id', function(req, res, next) {
     if(mode == "attente"){
         const query = "select * from kspace.ratings where user_id=? and rating = -1;";
         const params = [req.params.id];
-        queryRunner.executeQueryWithPage(query,req.query.page,res,params);
+        queryRunner.executeQueryWithPage(query,req.query.page,params).then
+        ( result =>{
+            res.send(result);
+            res.end();
+        },err =>{
+            res.send(errToJSON(err));
+            res.end();
+        });
     }
     //On récupert ceux déja noté
     else if(mode == "note"){
         const query = "select * from kspace.ratings where user_id=? and rating > 0 ALLOW FILTERING;";
         const params = [req.params.id];
-        queryRunner.executeQueryWithPage(query,req.query.page,res,params);
+        queryRunner.executeQueryWithPage(query,req.query.page,params).then
+        ( result =>{
+            res.send(result);
+            res.end();
+        },err =>{
+            res.send(errToJSON(err));
+            res.end();
+        });
     }
     //On récupert tout
     else{
         const query = "select * from kspace.ratings where user_id=?;";
         const params = [req.params.id];
-        queryRunner.executeQueryWithPage(query,req.query.page,res,params);
+        queryRunner.executeQueryWithPage(query,req.query.page,params).then
+        ( result =>{
+            res.send(result);
+            res.end();
+        },err =>{
+            res.send(errToJSON(err));
+            res.end();
+        });
     }
 });
 
@@ -55,12 +76,30 @@ router.put('/', function(req, res, next) {
     const params = [user_id, movie_id, rating,timestampNow];
     if(actualise == "O"){
         const returnString = JSON.stringify({ query: query, param: {user_id : user_id, movie_id : movie_id, rating: rating, timestamp:timestampNow}, actualise:true });
-        queryRunner.executeQueryWithParamAndActualiseFilm(movie_id,query,params,res, returnString);
-
+        queryRunner.executeQueryWithParam(query,params).then
+        ( result =>{
+            queryRunner.ActualiseFilm(movie_id).then
+            ( result =>{
+                res.send(returnString);
+                res.end();
+            },err =>{
+                res.send(errToJSON(err));
+                res.end();
+            });
+        },err =>{
+            res.send(errToJSON(err));
+            res.end();
+        });
     }else{
         const returnString = JSON.stringify({ query: query, param: {user_id : user_id, movie_id : movie_id, rating: rating, timestamp:timestampNow}, actualise:false });
-        queryRunner.executeQueryWithParam(query,params,res, returnString);
-
+        queryRunner.executeQueryWithParam(query,params).then
+        ( result =>{
+            res.send(returnString);
+            res.end();
+        },err =>{
+            res.send(errToJSON(err));
+            res.end();
+        });
     }
 });
 
@@ -93,11 +132,30 @@ router.patch('/', function(req, res, next) {
     const params = [rating,timestampNow, user_id, movie_id];
     if(actualise == "O"){
         const returnString = JSON.stringify({ query: query, param: {user_id : user_id, movie_id : movie_id, rating: rating, timestamp:timestampNow}, actualise:true });
-        queryRunner.executeQueryWithParamAndActualiseFilm(movie_id,query,params,res, returnString);
-
+        queryRunner.executeQueryWithParam(query,params).then
+        ( result =>{
+            queryRunner.ActualiseFilm(movie_id).then
+            ( result =>{
+                res.send(returnString);
+                res.end();
+            },err =>{
+                res.send(errToJSON(err));
+                res.end();
+            });
+        },err =>{
+            res.send(errToJSON(err));
+            res.end();
+        });
     }else {
         const returnString = JSON.stringify({ query: query, param: {user_id : user_id, movie_id : movie_id, rating: rating, timestamp:timestampNow}, actualise:false });
-        queryRunner.executeQueryWithParam(query,params,res, returnString);
+        queryRunner.executeQueryWithParam(query,params).then
+        ( result =>{
+            res.send(returnString);
+            res.end();
+        },err =>{
+            res.send(errToJSON(err));
+            res.end();
+        });
     }
 });
 
@@ -123,12 +181,30 @@ router.delete('/', function(req, res, next){
     const params = [user_id,movie_id];
     if(actualise == "O"){
         const returnString = JSON.stringify({ query: query, param: {user_id : user_id, movie_id : movie_id}, actualise:true});
-        queryRunner.executeQueryWithParamAndActualiseFilm(movie_id,query,params,res, returnString);
-
+        queryRunner.executeQueryWithParam(query,params).then
+        ( result =>{
+            queryRunner.ActualiseFilm(movie_id).then
+            ( result =>{
+                res.send(returnString);
+                res.end();
+            },err =>{
+                res.send(errToJSON(err));
+                res.end();
+            });
+        },err =>{
+            res.send(errToJSON(err));
+            res.end();
+        });
     }else {
         const returnString = JSON.stringify({ query: query, param: {user_id : user_id, movie_id : movie_id}, actualise:false});
-        queryRunner.executeQueryWithParam(query,params,res, returnString);
-    }
+        queryRunner.executeQueryWithParam(query,params).then
+        ( result =>{
+            res.send(returnString);
+            res.end();
+        },err =>{
+            res.send(errToJSON(err));
+            res.end();
+        });    }
 });
 
 module.exports = router;

@@ -165,6 +165,7 @@ block content
     +commandeParamGroup
       +commandParam(true,"id", "Movie_id du film", true)
       +commandParam(true,"?mode=all", "Permet de recuperer le crew et le cast en plus", false)
+      +commandParam(true,"?actualise=O", "Actualise le film avant récuperation", false)
     +commandeReturnGroup
       +commandeReturn("info{}","","Informations sur la connections")
       +commandeReturn("rows[{}]","","Liste des lignes")
@@ -186,6 +187,7 @@ block content
       +commandeReturn("","vote_count:[Int]","Nom de votant")
       +commandeReturn("","cast:[{}]","Si mode all, liste du cast")
       +commandeReturn("","crew:[{}]","Si mode all, liste du crew")
+      +commandeReturn("","actualise:[{}]","Si actualise O, indicateur OK ou KO")
       +commandeReturn("rowLength","","Nombre de ligne retourner ( Forcement 1 ici )")
       +commandeReturn("columns[{}]","","Liste des collonnes")
       +commandeReturn("pageState","","??")

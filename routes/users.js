@@ -8,11 +8,11 @@ const Uuid = cassandra.types.Uuid;
 router.get('/:id', async function(req, res, next) {
     const query = "select * from kspace.users where userid="+req.params.id+";";
     console.log(query);
-    await queryRunner.executeQuery(query,res).then( result =>{
+    await queryRunner.executeQuery(query).then( result =>{
         res.send(result);
         res.end();
     },err =>{
-        res.send(err);
+        res.send(errToJSON(err));
         res.end();
     });
 });
@@ -55,8 +55,14 @@ router.put('/', function(req, res, next) {
     const query = 'insert into kspace.users (userid,age,gender,occupation,occupationname,zipcode) values (?,?,?,?,?,?);';
     const params = [uuidRandom, age, gender,occupation,occupationname,zipcode];
     const returnString = JSON.stringify({ query: query, param: {userid : uuidRandom, age : age, gender: gender, occupation: occupation, occupationname : occupationname, zipcode : zipcode } });
-    queryRunner.executeQueryWithParam(query,params,res, returnString);
-});
+    queryRunner.executeQueryWithParam(query,params).then
+    ( result =>{
+        res.send(returnString);
+        res.end();
+    },err =>{
+        res.send(errToJSON(err));
+        res.end();
+    });});
 
 router.patch('/', function(req, res, next){
     const userid = req.body.userid;
@@ -100,8 +106,14 @@ router.patch('/', function(req, res, next){
     const query = 'Update kspace.users set age=?,gender=?,occupation=?,occupationname=?,zipcode=? where userid=?;';
     const params = [age, gender,occupation,occupationname,zipcode,userid];
     const returnString = JSON.stringify({ query: query, param: {userid : userid, age : age, gender: gender, occupation: occupation, occupationname : occupationname, zipcode : zipcode } });
-    queryRunner.executeQueryWithParam(query,params,res, returnString);
-});
+    queryRunner.executeQueryWithParam(query,params).then
+    ( result =>{
+        res.send(returnString);
+        res.end();
+    },err =>{
+        res.send(errToJSON(err));
+        res.end();
+    });});
 
 router.delete('/', function(req, res, next){
     const userid = req.body.userid;
@@ -115,8 +127,14 @@ router.delete('/', function(req, res, next){
     const query = 'delete from kspace.users where userid=?;';
     const params = [userid];
     const returnString = JSON.stringify({ query: query, param: {userid : userid}});
-    queryRunner.executeQueryWithParam(query,params,res, returnString);
-});
+    queryRunner.executeQueryWithParam(query,params).then
+    ( result =>{
+        res.send(returnString);
+        res.end();
+    },err =>{
+        res.send(errToJSON(err));
+        res.end();
+    });});
 
 
 module.exports = router;
