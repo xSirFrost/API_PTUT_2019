@@ -1,24 +1,12 @@
-const assert = require('assert');
 const cassandra = require('cassandra-driver');
-const errToJSON = require('error-to-json')
 
-const offset = 2;
+const offset = 50;
 
 function connection(){
     return new cassandra.Client({
         contactPoints: ['51.75.254.172'],
         localDataCenter: 'datacenter1'
     });
-}
-
-function returnAndClose(res,client,send){
-    if(res!=null){
-        res.send(send);
-        res.end();
-    }
-    if(client!=null){
-        client.shutdown();
-    }
 }
 
 module.exports = {

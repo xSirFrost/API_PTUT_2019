@@ -257,12 +257,14 @@ block content
       +commandParam(true,"?page=[int]", "Pagination par lot de 50, si vous mettez page=2, vous avez 51-100")
       +commandParam(true,"?mode=attente", "Permet de récupérer seulement les notes en attentes", false)
       +commandParam(true,"?mode=note", "Permet de récupérer seulement les notes déja notées", false)
+      +commandParam(true,"?data=complet", "Permet de récupérer seulement les notes déja notées", false)
     +commandeReturnGroup
       +commandeReturn("[{}]","","Liste des lignes sous forme de tableau")
       +commandeReturn("","user_id:[UUID]","Identifiant de l'utilisateur")
       +commandeReturn("","movie_id:[UUID]","Identifiant du film")
       +commandeReturn("","rating:[Float]","Note : -1 si non noté, entre 0 et 5 sinon")
       +commandeReturn("","timestamp:[Timestamp]","Date et Heure de la dernière mise à jour")
+      +commandeReturn("","movie:[]","Si data=complet et que l'id correspond a un film existant, retourne le film")
 
   +commande("/ratings", "Permet d'ajouter une note pour un utilisateur","lime lighten-4","Put")
     +commandeParamGroup
