@@ -131,15 +131,15 @@ block content
       a(href='' class='brand-logo center')
         = 'Dictionnaire des commandes'
 
-  +information("Informations générales", "Listes des informations utiles à l'appel de l'API","light-blue lighten-4")
+  +information("Informations générales", "Liste des informations utiles à l'appel de l'API","light-blue lighten-4")
     +infoParam("***",true,"URL", "localhost:3000")
     +infoParam("***",true,"Header", "Au minimum : [Content-Type: application/json]")
     +infoParam("***",true,"Body", "JSON")
     +infoParam("**",true,"Protocole", "HTTP")
     +infoParam("**",true,"Return", "JSON")
-    +infoParam("**",true,"Patch", "Attention : Faire un patch sur un where non trouvé,fera un insert")
+    +infoParam("**",true,"Patch", "Attention : Faire un patch sur un where non trouvé fera un insert")
 
-  +commande("/films", "Permet de recuperer tout les films","deep-orange lighten-4","Get")
+  +commande("/films", "Permet de récupérer tous les films","deep-orange lighten-4","Get")
     +commandeParamGroup
       +commandParam(true,"?page=[int]", "Pagination par lot de 50, si vous mettez page=2, vous avez 51-100")
     +commandeReturnGroup
@@ -155,19 +155,19 @@ block content
       +commandeReturn("","poster_path:[String]","Url de l'image du film")
       +commandeReturn("","release_date:[String]","Date de sortie sous format \"YYYY-MM-DD\"")
       +commandeReturn("","revenue:[Int]","Revenu du film")
-      +commandeReturn("","runtime:[Int]","Temps du film en minute")
-      +commandeReturn("","status:[String]","Statu du film (released,..)")
+      +commandeReturn("","runtime:[Int]","Temps du film en minutes")
+      +commandeReturn("","status:[String]","Statut du film (released,..)")
       +commandeReturn("","title:[String]","Titre")
       +commandeReturn("","vote_average:[Float]","Moyenne sur 10")
-      +commandeReturn("","vote_count:[Int]","Nom de votant")
+      +commandeReturn("","vote_count:[Int]","Nombre de votants")
 
   +commande("/films/:id", "Permet de récuperer un film","deep-orange lighten-4","Get")
     +commandeParamGroup
       +commandParam(true,"id", "Movie_id du film", true)
-      +commandParam(true,"?mode=all", "Permet de recuperer le crew et le cast en plus", false)
-      +commandParam(true,"?actualise=O", "Actualise le film avant récuperation", false)
+      +commandParam(true,"?mode=all", "Permet de récupérer le crew et le cast en plus", false)
+      +commandParam(true,"?actualise=O", "Actualise le film avant récupération", false)
     +commandeReturnGroup
-      +commandeReturn("info{}","","Informations sur la connections")
+      +commandeReturn("info{}","","Informations sur la connexion")
       +commandeReturn("rows[{}]","","Liste des lignes")
       +commandeReturn("","movie_id:[UUID]","ID du film en base")
       +commandeReturn("","adult:[Bool]","True si c'est un film pour adulte")
@@ -181,22 +181,22 @@ block content
       +commandeReturn("","release_date:[String]","Date de sortie sous format \"YYYY-MM-DD\"")
       +commandeReturn("","revenue:[Int]","Revenu du film")
       +commandeReturn("","runtime:[Int]","Temps du film en minute")
-      +commandeReturn("","status:[String]","Statu du film (released,..)")
+      +commandeReturn("","status:[String]","Statut du film (released,..)")
       +commandeReturn("","title:[String]","Titre")
       +commandeReturn("","vote_average:[Float]","Moyenne sur 10")
-      +commandeReturn("","vote_count:[Int]","Nom de votant")
+      +commandeReturn("","vote_count:[Int]","Nombre de votants")
       +commandeReturn("","cast:[{}]","Si mode all, liste du cast")
       +commandeReturn("","crew:[{}]","Si mode all, liste du crew")
-      +commandeReturn("","actualise:[{}]","Si actualise O, indicateur OK ou KO")
-      +commandeReturn("rowLength","","Nombre de ligne retourner ( Forcement 1 ici )")
-      +commandeReturn("columns[{}]","","Liste des collonnes")
+      +commandeReturn("","actualise:[{}]","Si on actualise O, indicateur OK ou KO")
+      +commandeReturn("rowLength","","Nombre de lignes retournées ( Forcement 1 ici )")
+      +commandeReturn("columns[{}]","","Liste des colonnes")
       +commandeReturn("pageState","","??")
 
-  +commande("/users/:id", "Permet de récuperer un utilisateur","green lighten-4","Get")
+  +commande("/users/:id", "Permet de récupérer un utilisateur","green lighten-4","Get")
     +commandeParamGroup
       +commandParam(true,"id", "Userid de l'utilisateur", true)
     +commandeReturnGroup
-      +commandeReturn("info{}","","Informations sur la connections")
+      +commandeReturn("info{}","","Informations sur la connexion")
       +commandeReturn("rows[{}]","","Liste des lignes")
       +commandeReturn("","userid:[UUID]","ID de l'utilisateur en base")
       +commandeReturn("","age:[Int]","Age de l'utilisateur, par tranche d'age")
@@ -204,8 +204,8 @@ block content
       +commandeReturn("","occupation:[String]", "Code d'activité pro de l'utilisateur")
       +commandeReturn("","occupationname:[String]", "Nom d'activité pro de l'utilisateur")
       +commandeReturn("","zipcode:[String]", "Code postal de l'utilisateur")
-      +commandeReturn("rowLength","","Nombre de ligne retourner ( Forcement 1 ici )")
-      +commandeReturn("columns[{}]","","Liste des collonnes")
+      +commandeReturn("rowLength","","Nombre de lignes retournées ( Forcement 1 ici )")
+      +commandeReturn("columns[{}]","","Liste des colonnes")
       +commandeReturn("pageState","","??")
 
   +commande("/users", "Permet d'ajouter un utilisateur","green lighten-4","Put")
@@ -216,8 +216,8 @@ block content
       +commandParam(false,"occupationname:[String]", "Nom d'activité pro de l'utilisateur", true)
       +commandParam(false,"zipcode:[String]", "Code postal de l'utilisateur", true)
     +commandeReturnGroup
-      +commandeReturn("query","","La requete preparé par le back")
-      +commandeReturn("param{}","","Liste des paramètres utilisé dans la query")
+      +commandeReturn("query","","La requête preparée par le back")
+      +commandeReturn("param{}","","Liste des paramètres utilisés dans la query")
       +commandeReturn("","userid:[UUID]","ID de l'utilisateur généré aléatoirement")
       +commandeReturn("","age:[Int]","Age de l'utilisateur, par tranche d'age")
       +commandeReturn("","gender:[String]","Genre de l'utilisateur, peut etre M, F ou A")
@@ -234,8 +234,8 @@ block content
       +commandParam(false,"occupationname:[String]", "Nom d'activité pro de l'utilisateur", true)
       +commandParam(false,"zipcode:[String]", "Code postal de l'utilisateur", true)
     +commandeReturnGroup
-      +commandeReturn("query","","La requete preparé par le back")
-      +commandeReturn("param{}","","Liste des paramètres utilisé dans la query")
+      +commandeReturn("query","","La requete preparée par le back")
+      +commandeReturn("param{}","","Liste des paramètres utilisés dans la query")
       +commandeReturn("","userid:[UUID]","ID de l'utilisateur en base")
       +commandeReturn("","age:[Int]","Age de l'utilisateur, par tranche d'age")
       +commandeReturn("","gender:[String]","Genre de l'utilisateur, peut etre M, F ou A")
@@ -247,16 +247,16 @@ block content
     +commandeParamGroup
       +commandParam(false,"userid:[UUID]", "Userid de l'utilisateur", true)
     +commandeReturnGroup
-      +commandeReturn("query","","La requete preparé par le back")
-      +commandeReturn("param{}","","Liste des paramètres utilisé dans la query")
+      +commandeReturn("query","","La requete preparée par le back")
+      +commandeReturn("param{}","","Liste des paramètres utilisés dans la query")
       +commandeReturn("","userid:[UUID]","ID de l'utilisateur en base")
 
   +commande("/ratings/:id", "Permet de recuperer les notes d'un utilisateur","lime lighten-4","Get")
     +commandeParamGroup
       +commandParam(true,"id=[UUID]", "Userid de l'utilisateur", true)
       +commandParam(true,"?page=[int]", "Pagination par lot de 50, si vous mettez page=2, vous avez 51-100")
-      +commandParam(true,"?mode=attente", "Permet de recuperer seulement les notes en attentes", false)
-      +commandParam(true,"?mode=note", "Permet de recuperer seulement les notes déja notés", false)
+      +commandParam(true,"?mode=attente", "Permet de récupérer seulement les notes en attentes", false)
+      +commandParam(true,"?mode=note", "Permet de récupérer seulement les notes déja notées", false)
     +commandeReturnGroup
       +commandeReturn("[{}]","","Liste des lignes sous forme de tableau")
       +commandeReturn("","user_id:[UUID]","Identifiant de l'utilisateur")
@@ -266,13 +266,13 @@ block content
 
   +commande("/ratings", "Permet d'ajouter une note pour un utilisateur","lime lighten-4","Put")
     +commandeParamGroup
-      +commandParam(true,"?actualise=O", "Actualise la table movies en vu des modifications. Attention, lance 4 appels vers Cassandra", false)
+      +commandParam(true,"?actualise=O", "Actualise la table movies en vue des modifications. Attention, lance 4 appels vers Cassandra", false)
       +commandParam(false,"user_id:[UUID]","Identifiant de l'utilisateur", true)
       +commandParam(false,"movie_id:[UUID]","Identifiant du film", true)
       +commandParam(false,"rating:[Float]","Note : -1 si non noté, entre 0 et 5 sinon", true)
     +commandeReturnGroup
-      +commandeReturn("query","","La requete preparé par le back")
-      +commandeReturn("param{}","","Liste des paramètres utilisé dans la query")
+      +commandeReturn("query","","La requete preparée par le back")
+      +commandeReturn("param{}","","Liste des paramètres utilisés dans la query")
       +commandeReturn("","user_id:[UUID]","Identifiant de l'utilisateur")
       +commandeReturn("","movie_id:[UUID]","Identifiant du film")
       +commandeReturn("","rating:[Float]","Note : -1 si non noté, entre 0 et 5 sinon")
@@ -280,13 +280,13 @@ block content
 
   +commande("/ratings", "Permet d'ajouter une note pour un utilisateur","lime lighten-4","Patch")
     +commandeParamGroup
-      +commandParam(true,"?actualise=O", "Actualise la table movies en vu des modifications. Attention, lance 4 appels vers Cassandra", false)
+      +commandParam(true,"?actualise=O", "Actualise la table movies en vue des modifications. Attention, lance 4 appels vers Cassandra", false)
       +commandParam(false,"user_id:[UUID]","Identifiant de l'utilisateur", true)
       +commandParam(false,"movie_id:[UUID]","Identifiant du film", true)
       +commandParam(false,"rating:[Float]","Note : -1 si non noté, entre 0 et 5 sinon", true)
     +commandeReturnGroup
-      +commandeReturn("query","","La requete preparé par le back")
-      +commandeReturn("param{}","","Liste des paramètres utilisé dans la query")
+      +commandeReturn("query","","La requete preparée par le back")
+      +commandeReturn("param{}","","Liste des paramètres utilisés dans la query")
       +commandeReturn("","user_id:[UUID]","Identifiant de l'utilisateur")
       +commandeReturn("","movie_id:[UUID]","Identifiant du film")
       +commandeReturn("","rating:[Float]","Note : -1 si non noté, entre 0 et 5 sinon")
@@ -294,11 +294,11 @@ block content
 
   +commande("/ratings", "Permet d'ajouter une note pour un utilisateur","lime lighten-4","Delete")
     +commandeParamGroup
-      +commandParam(true,"?actualise=O", "Actualise la table movies en vu des modifications. Attention, lance 4 appels vers Cassandra", false)
+      +commandParam(true,"?actualise=O", "Actualise la table movies en vue des modifications. Attention, lance 4 appels vers Cassandra", false)
       +commandParam(false,"user_id:[UUID]","Identifiant de l'utilisateur", true)
       +commandParam(false,"movie_id:[UUID]","Identifiant du film", true)
     +commandeReturnGroup
-      +commandeReturn("query","","La requete preparé par le back")
-      +commandeReturn("param{}","","Liste des paramètres utilisé dans la query")
+      +commandeReturn("query","","La requete preparée par le back")
+      +commandeReturn("param{}","","Liste des paramètres utilisés dans la query")
       +commandeReturn("","user_id:[UUID]","Identifiant de l'utilisateur")
       +commandeReturn("","movie_id:[UUID]","Identifiant du film")
