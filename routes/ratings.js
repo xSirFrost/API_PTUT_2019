@@ -8,11 +8,11 @@ const Uuid = cassandra.types.Uuid;
 router.get('/:id', function(req, res, next) {
     const mode = req.query.mode;
     const data = req.query.data;
-    //On récupert seulement les futurs notes
-    if(mode == "attente"){
+    //On récupert seulement les futurs noteds
+    if(mode == "later"){
         const query = "select * from kspace.ratings where user_id=? and rating = -1;";
         const params = [req.params.id];
-        if(data == "complet"){
+        if(data == "all"){
             queryRunner.executeQueryWithPage(query, req.query.page, params).then
             (result => {
                 if(result.length==0){
@@ -44,10 +44,10 @@ router.get('/:id', function(req, res, next) {
         }
     }
     //On récupert ceux déja noté
-    else if(mode == "note"){
+    else if(mode == "noted"){
         const query = "select * from kspace.ratings where user_id=? and rating > 0 ALLOW FILTERING;";
         const params = [req.params.id];
-        if(data == "complet"){
+        if(data == "all"){
             queryRunner.executeQueryWithPage(query, req.query.page, params).then
             (result => {
                 if(result.length==0){
@@ -82,7 +82,7 @@ router.get('/:id', function(req, res, next) {
     else{
         const query = "select * from kspace.ratings where user_id=?;";
         const params = [req.params.id];
-        if(data == "complet"){
+        if(data == "all"){
             queryRunner.executeQueryWithPage(query, req.query.page, params).then
             (result => {
                 if(result.length==0){
@@ -119,7 +119,7 @@ router.put('/', function(req, res, next) {
     const user_id = req.body.user_id;
     const movie_id = req.body.movie_id;
     const rating = req.body.rating;
-    const actualise = req.query.actualise;
+    const update = req.query.update;
 
     if(user_id == undefined){
         res.send(errToJSON(new Error("User_id non renseigné")));
@@ -141,8 +141,8 @@ router.put('/', function(req, res, next) {
     const query = 'insert into kspace.ratings (user_id,movie_id,rating,timestamp) values (?,?,?,?);';
     const timestampNow = Date.now();
     const params = [user_id, movie_id, rating,timestampNow];
-    if(actualise == "O"){
-        const returnString = JSON.stringify({ query: query, param: {user_id : user_id, movie_id : movie_id, rating: rating, timestamp:timestampNow}, actualise:true });
+    if(update == "Y"){
+        const returnString = JSON.stringify({ query: query, param: {user_id : user_id, movie_id : movie_id, rating: rating, timestamp:timestampNow}, update:true });
         queryRunner.executeQueryWithParam(query,params).then
         ( result =>{
             queryRunner.ActualiseFilm(movie_id).then
@@ -158,7 +158,7 @@ router.put('/', function(req, res, next) {
             res.end();
         });
     }else{
-        const returnString = JSON.stringify({ query: query, param: {user_id : user_id, movie_id : movie_id, rating: rating, timestamp:timestampNow}, actualise:false });
+        const returnString = JSON.stringify({ query: query, param: {user_id : user_id, movie_id : movie_id, rating: rating, timestamp:timestampNow}, update:false });
         queryRunner.executeQueryWithParam(query,params).then
         ( result =>{
             res.send(returnString);
@@ -174,7 +174,7 @@ router.patch('/', function(req, res, next) {
     const user_id = req.body.user_id;
     const movie_id = req.body.movie_id;
     const rating = req.body.rating;
-    const actualise = req.query.actualise;
+    const update = req.query.update;
 
 
     if(user_id == undefined){
@@ -197,8 +197,8 @@ router.patch('/', function(req, res, next) {
     const query = 'Update kspace.ratings set rating=?,timestamp=? where user_id=? and movie_id=?;';
     const timestampNow = Date.now();
     const params = [rating,timestampNow, user_id, movie_id];
-    if(actualise == "O"){
-        const returnString = JSON.stringify({ query: query, param: {user_id : user_id, movie_id : movie_id, rating: rating, timestamp:timestampNow}, actualise:true });
+    if(update == "Y"){
+        const returnString = JSON.stringify({ query: query, param: {user_id : user_id, movie_id : movie_id, rating: rating, timestamp:timestampNow}, update:true });
         queryRunner.executeQueryWithParam(query,params).then
         ( result =>{
             queryRunner.ActualiseFilm(movie_id).then
@@ -214,7 +214,7 @@ router.patch('/', function(req, res, next) {
             res.end();
         });
     }else {
-        const returnString = JSON.stringify({ query: query, param: {user_id : user_id, movie_id : movie_id, rating: rating, timestamp:timestampNow}, actualise:false });
+        const returnString = JSON.stringify({ query: query, param: {user_id : user_id, movie_id : movie_id, rating: rating, timestamp:timestampNow}, update:false });
         queryRunner.executeQueryWithParam(query,params).then
         ( result =>{
             res.send(returnString);
@@ -229,7 +229,7 @@ router.patch('/', function(req, res, next) {
 router.delete('/', function(req, res, next){
     const user_id = req.body.user_id;
     const movie_id = req.body.movie_id;
-    const actualise = req.query.actualise;
+    const update = req.query.update;
 
 
     if(user_id == undefined){
@@ -246,8 +246,8 @@ router.delete('/', function(req, res, next){
 
     const query = 'delete from kspace.ratings where user_id=? and movie_id=?;';
     const params = [user_id,movie_id];
-    if(actualise == "O"){
-        const returnString = JSON.stringify({ query: query, param: {user_id : user_id, movie_id : movie_id}, actualise:true});
+    if(update == "Y"){
+        const returnString = JSON.stringify({ query: query, param: {user_id : user_id, movie_id : movie_id}, update:true});
         queryRunner.executeQueryWithParam(query,params).then
         ( result =>{
             queryRunner.ActualiseFilm(movie_id).then
@@ -263,7 +263,7 @@ router.delete('/', function(req, res, next){
             res.end();
         });
     }else {
-        const returnString = JSON.stringify({ query: query, param: {user_id : user_id, movie_id : movie_id}, actualise:false});
+        const returnString = JSON.stringify({ query: query, param: {user_id : user_id, movie_id : movie_id}, update:false});
         queryRunner.executeQueryWithParam(query,params).then
         ( result =>{
             res.send(returnString);
