@@ -7,11 +7,16 @@ const Uuid = cassandra.types.Uuid;
 
 router.get('/:id', async function(req, res, next) {
     const query = "select * from kspace.users where userid="+req.params.id+";";
-    console.log(query);
-    await queryRunner.executeQuery(query).then( result =>{
-        res.send(result);
-        res.end();
-    },err =>{
+    await queryRunner.executeQuery(query)
+    .then(result =>{
+        console.log('result: ', result);
+        if (result.rows[0]) {
+            res.send(result.rows[0]);
+            res.end(); 
+        } else {
+            res.send(errToJSON(new Error("L'utilisateur n'existe pas.")));
+        }
+    }, err =>{
         res.send(errToJSON(err));
         res.end();
     });
@@ -51,15 +56,23 @@ router.put('/', function(req, res, next) {
         return;
     }
 
-    const uuidRandom = Uuid.random();
+    // const uuidRandom = Uuid.random();
+    const uuidRandom = 90002;
     const query = 'insert into kspace.users (userid,age,gender,occupation,occupationname,zipcode) values (?,?,?,?,?,?);';
     const params = [uuidRandom, age, gender,occupation,occupationname,zipcode];
-    const returnString = JSON.stringify({ query: query, param: {userid : uuidRandom, age : age, gender: gender, occupation: occupation, occupationname : occupationname, zipcode : zipcode } });
+    const returnString = JSON.stringify({
+        userid : uuidRandom, 
+        age : age, 
+        gender: gender, 
+        occupation: occupation, 
+        occupationname : occupationname, 
+        zipcode : zipcode
+     });
     queryRunner.executeQueryWithParam(query,params).then
-    ( result =>{
+    (result => {
         res.send(returnString);
         res.end();
-    },err =>{
+    }, err => {
         res.send(errToJSON(err));
         res.end();
     });});
@@ -107,10 +120,10 @@ router.patch('/', function(req, res, next){
     const params = [age, gender,occupation,occupationname,zipcode,userid];
     const returnString = JSON.stringify({ query: query, param: {userid : userid, age : age, gender: gender, occupation: occupation, occupationname : occupationname, zipcode : zipcode } });
     queryRunner.executeQueryWithParam(query,params).then
-    ( result =>{
+    ( () => {
         res.send(returnString);
         res.end();
-    },err =>{
+    }, err => {
         res.send(errToJSON(err));
         res.end();
     });});
@@ -126,12 +139,14 @@ router.delete('/', function(req, res, next){
 
     const query = 'delete from kspace.users where userid=?;';
     const params = [userid];
-    const returnString = JSON.stringify({ query: query, param: {userid : userid}});
     queryRunner.executeQueryWithParam(query,params).then
-    ( result =>{
-        res.send(returnString);
+    (() => {
+        res.send({
+            success: true, 
+            message: "L'utilisateur a bien été supprimé."
+        });
         res.end();
-    },err =>{
+    }, err => {
         res.send(errToJSON(err));
         res.end();
     });});
