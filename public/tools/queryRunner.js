@@ -117,50 +117,5 @@ module.exports = {
                 return;
             }
         });
-    },
-    ActualiseFilm : async function(movie_id) {
-        return new Promise(async(resolve, reject) => {
-            try {
-                let popularity = 0;
-                let average = 0;
-                let count = 0;
-                this.executeQuery("select count(*) as popularity from kspace.users;").then
-                (resultPopularity => {
-                    if(resultPopularity=="{}" || resultPopularity.rows[0]["popularity"] == undefined) {
-                        reject(new Error("Récuperation du nombre total d'utilisateur en echec"));
-                        return;
-                    }else{
-                        popularity = parseInt(resultPopularity.rows[0]["popularity"].toString());
-                        this.executeQueryWithParam("select avg(rating) as averageNote,count(rating) as countNote from kspace.ratings where movie_id = ? and rating > 0 ALLOW FILTERING;",[movie_id]).then
-                        (resultRating => {
-                            if(resultRating=="{}" || resultRating.rows[0]["averagenote"] == undefined || resultRating.rows[0]["countnote"] == undefined) {
-                                reject(new Error("Récuperation du nombre de vote et de la moyenne en echec"));
-                                return;
-                            }else{
-                                count = parseInt(resultRating.rows[0]["countnote"].toString());
-                                average = parseFloat(resultRating.rows[0]["averagenote"].toString());
-                                this.executeQueryWithParam("update kspace.movies set popularity=?,vote_average=?,vote_count=? where movie_id=?;", [(count/popularity*100), average, count, movie_id]).then
-                                (resultAll => {
-                                    resolve("OK")
-                                    return;
-                                }, err => {
-                                    reject(new Error("Actualisation du film en echec"));
-                                    return;
-                                });
-                            }
-                        }, err => {
-                            reject(new Error("Récuperation du nombre de vote et de la moyenne en echec"));
-                            return;
-                        });
-                    }
-                }, err => {
-                    reject(new Error("Récuperation du nombre total d'utilisateur en echec"));
-                    return;
-                });
-            } catch (error) {
-                reject(error);
-                return;
-            }
-        });
     }
 };

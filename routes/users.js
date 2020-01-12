@@ -6,7 +6,7 @@ const cassandra = require('cassandra-driver');
 const Uuid = cassandra.types.Uuid;
 
 router.get('/:id', async function(req, res, next) {
-    const query = "select * from kspace.users where userid="+req.params.id+";";
+    const query = "select * from kspace3.users where userid="+req.params.id+";";
     await queryRunner.executeQuery(query)
     .then(result =>{
         console.log('result: ', result);
@@ -57,8 +57,8 @@ router.put('/', function(req, res, next) {
     }
 
     // const uuidRandom = Uuid.random();
-    const uuidRandom = 90002;
-    const query = 'insert into kspace.users (userid,age,gender,occupation,occupationname,zipcode) values (?,?,?,?,?,?);';
+    const uuidRandom = Uuid.random();
+    const query = 'insert into kspace3.users (userid,age,gender,occupation,occupationname,zipcode) values (?,?,?,?,?,?);';
     const params = [uuidRandom, age, gender,occupation,occupationname,zipcode];
     const returnString = JSON.stringify({
         userid : uuidRandom, 
@@ -116,7 +116,7 @@ router.patch('/', function(req, res, next){
         return;
     }
 
-    const query = 'Update kspace.users set age=?,gender=?,occupation=?,occupationname=?,zipcode=? where userid=?;';
+    const query = 'Update kspace3.users set age=?,gender=?,occupation=?,occupationname=?,zipcode=? where userid=?;';
     const params = [age, gender,occupation,occupationname,zipcode,userid];
     const returnString = JSON.stringify({ query: query, param: {userid : userid, age : age, gender: gender, occupation: occupation, occupationname : occupationname, zipcode : zipcode } });
     queryRunner.executeQueryWithParam(query,params).then
@@ -137,7 +137,7 @@ router.delete('/', function(req, res, next){
         return;
     }
 
-    const query = 'delete from kspace.users where userid=?;';
+    const query = 'delete from kspace3.users where userid=?;';
     const params = [userid];
     queryRunner.executeQueryWithParam(query,params).then
     (() => {
